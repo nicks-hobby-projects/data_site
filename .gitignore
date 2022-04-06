@@ -1,5 +1,6 @@
 .env
-scripts_to_load_data/
 __pycache__/
-data_site/__pycache__/
+*.pyc
+.ipynb_checkpoints/
+*.ipynb
 data_site/.ipynb_checkpoints/

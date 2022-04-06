@@ -1,0 +1,19 @@
+body {
+    background-color: #212121;
+    color: white
+}
+
+.nowrap_td {
+    white-space: nowrap;
+}
+
+caption { caption-side:top; }
+
+.tickers {
+         color: #EFEDFC;
+         font-size: 21px
+}
+.ticker-values{
+                font-size: 21px;
+}
+

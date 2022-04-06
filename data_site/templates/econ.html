@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+
+
+{% block head_chart_stufF %}
+
+<script src ="static/chartjs/node_modules/chart.js/dist/chart.js"> </script>
+{% endblock %}
+
+
+{% block title %}
+Economic Numbers
+{% endblock %}
+
+{% block content %}
+
+<h1></h1>
+<div class="clearfix">
+<div class = "container-xxl float-left">
+  <div class = "row">
+    <div class = "col-sm-6">
+      <table class = "table table-dark  table-striped">
+        <thread>
+        <tr>
+          {% for h in headers %}
+          <th scope = "col">
+            <p class = "text-center">
+            {{ h }}
+            </p>
+          </th>
+          {% endfor %}
+        </tr>
+        </thread>
+        <tbody>
+        <tr>
+          {% for d in datas %}
+          <td class="text-center">
+            <p class = "text-center">
+            {{ "{:,}".format(d) }}
+            </p>
+          </td>
+          {% endfor %}
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class = "col-2">
+    </div>
+  </div>
+</div>
+</div>
+
+<div  class="container-xxl">
+<div class = "row">
+  <div class = 'col-sm-11'>
+  <div class = "row">
+    <div class = "col-sm-4">
+      <canvas id="cpiaucsl" width="400" height="400"></canvas>
+    </div>
+    <div class = "col-sm-4">
+      <canvas id="mich1" width="400" height="400"></canvas>
+    </div>
+
+  <div class = "col-sm-4" >
+    <canvas id="tot_w" width="300" height="400"></canvas>
+    <p id="caption">Total Wealth Percentages</p>
+  </div>
+  </div>
+  <div class = "row" >
+    <div class = 'col-sm-6'>
+      <canvas id="unrate" width="500" height="400"></canvas>
+    </div>
+
+  <div class = 'col-sm-6' >
+    <canvas id="gdp" width="500" height="400"></canvas>
+  </div>
+  </div>
+  </div>
+  <div class = "col-1">
+    <p>Hello</p>
+  </div>
+</div>
+</div>
+
+<script>
+
+
+      //  Chart.defaults.global.responsive = false;
+
+        // CPI Chart
+        var cpiaucsl_chartData = {
+          labels : [{% for item in chart_dict['CPIAUCSL']['date'] %}
+                     "{{item}}",
+                    {% endfor %}],
+          datasets : [{
+              label: "{{ chart_dict['CPIAUCSL']['legend']  }}",
+              fill: true,
+              lineTension: 0.1,
+              backgroundColor: "green",
+              borderColor: "rgba(75,192,192,1)",
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              pointBorderColor: "rgba(75,192,192,1)",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 1,
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: "rgba(75,192,192,1)",
+              pointHoverBorderColor: "rgba(220,220,220,1)",
+              pointHoverBorderWidth: 2,
+              pointRadius: 1,
+              pointHitRadius: 10,
+              data : [{% for item in chart_dict['CPIAUCSL']['vals'] %}
+                        {{item}},
+                      {% endfor %}],
+              spanGaps: false
+          }]
+        }
+
+        // get chart canvas
+        var cpiaucsl_ctx = document.getElementById("cpiaucsl").getContext("2d");
+
+        // create the chart using the chart canvas
+        var cpiaucsl_Chart = new Chart(cpiaucsl_ctx, {
+          type: 'line',
+          data: cpiaucsl_chartData,
+        });
+
+
+        var unrate_chartData = {
+          labels : [{% for item in chart_dict['UNRATE']['date'] %}
+                     "{{item}}",
+                    {% endfor %}],
+          datasets : [{
+              label: "{{ chart_dict['UNRATE']['legend'] }}",
+              fill: true,
+              lineTension: 0.1,
+              backgroundColor: "blue",
+              borderColor: "rgba(75,192,192,1)",
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              pointBorderColor: "rgba(75,192,192,1)",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 1,
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: "rgba(75,192,192,1)",
+              pointHoverBorderColor: "rgba(220,220,220,1)",
+              pointHoverBorderWidth: 2,
+              pointRadius: 1,
+              pointHitRadius: 10,
+              data : [{% for item in chart_dict['UNRATE']['vals'] %}
+                        {{item}},
+                      {% endfor %}],
+              spanGaps: false
+          }]
+        }
+
+        // get chart canvas
+        var unrate_ctx = document.getElementById("unrate").getContext("2d");
+
+        // create the chart using the chart canvas
+        var unrate_Chart = new Chart(unrate_ctx, {
+          type: 'line',
+          data: unrate_chartData,
+        })
+  //
+              var gdp_chartData = {
+                labels : [{% for item in chart_dict['GDP']['date'] %}
+                           "{{item}}",
+                          {% endfor %}],
+                datasets : [{
+                    label: "{{ chart_dict['GDP']['legend'] }}",
+                    fill: true,
+                    lineTension: 0.1,
+                    backgroundColor: "rgba(75,192,192,0.4)",
+                    borderColor: "rgba(75,192,192,1)",
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: "rgba(75,192,192,1)",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data : [{% for item in chart_dict['GDP']['vals'] %}
+                              {{item}},
+                            {% endfor %}],
+                    spanGaps: false
+                }]
+              }
+
+              // get chart canvas
+              var gdp_ctx = document.getElementById("gdp").getContext("2d");
+
+              // create the chart using the chart canvas
+              var gdp_Chart = new Chart(gdp_ctx, {
+                type: 'line',
+                data: gdp_chartData,
+              })
+
+
+
+
+              var tot_w_chartData = {
+                labels : [{% for item in tot_w_labels %}
+                           "{{item}}",
+                          {% endfor %}],
+                datasets : [{
+                    label: '{{ tot_w_legend }}',
+                    backgroundColor: ["rgba(75,192,192,0.4)", 'rgb(68,205,18)', 'rgb(31,18,205)', 'rgb(249,157,19)'],
+                    borderColor: ["rgba(75,192,192,1)"],
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: "rgba(75,192,192,1)",
+                    data : [{% for item in tot_w_values %}
+                              {{item}},
+                            {% endfor %}],
+
+                }]
+              }
+
+              // get chart canvas
+              var tot_w_ctx = document.getElementById("tot_w").getContext("2d");
+
+              // create the chart using the chart canvas
+              var tot_w_Chart = new Chart(tot_w_ctx, {
+                type: 'pie',
+                data: tot_w_chartData,
+              })
+
+
+            var mich_chartData = {
+              labels : [{% for item in chart_dict['MICH']['date'] %}
+                         "{{item}}",
+                        {% endfor %}],
+              datasets : [{
+                  label: "{{ chart_dict['MICH']['legend'] }}",
+                  fill: true,
+                  lineTension: 0.1,
+                  backgroundColor: "rgba(75,192,192,0.4)",
+                  borderColor: "rgba(75,192,192,1)",
+                  borderCapStyle: 'butt',
+                  borderDash: [],
+                  borderDashOffset: 0.0,
+                  borderJoinStyle: 'miter',
+                  pointBorderColor: "rgba(75,192,192,1)",
+                  pointBackgroundColor: "#fff",
+                  pointBorderWidth: 1,
+                  pointHoverRadius: 5,
+                  pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                  pointHoverBorderColor: "rgba(220,220,220,1)",
+                  pointHoverBorderWidth: 2,
+                  pointRadius: 1,
+                  pointHitRadius: 10,
+                  data : [{% for item in chart_dict['MICH']['vals'] %}
+                            {{item}},
+                          {% endfor %}],
+                  spanGaps: false
+              }]
+            }
+
+            // get chart canvas
+            var mich_ctx = document.getElementById("mich1").getContext("2d");
+
+            // create the chart using the chart canvas
+            var mich_Chart = new Chart(mich_ctx, {
+              type: 'line',
+              data: mich_chartData,
+            })
+
+
+
+</script>
+
+
+{% endblock %}

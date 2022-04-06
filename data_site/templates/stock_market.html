@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div id = "gspc-prev" hidden >"{{ gspc_prev }}"</div>
+<div id = "ixic-prev" hidden >"{{ ixic_prev }}"</div>
+<div id = "dji-prev" hidden >"{{ dji_prev }}"</div>
+<div id = "crude-oil-prev" hidden >"{{ crude_oil_prev }}"</div>
+
+<div class = "container-fluid">
+    <div class = "row">
+        <div class = "col-sm-12"></div>
+    </div>
+        <div class = "row">
+            <div class = "col-sm-6">
+                <div class = "row">
+                    <div class = "col-sm-12">
+                        <h2 id="gspc_now" class = "ticker-values">{{ "${:,.2f}".format(indexes['S&P 500']) }}</h2>
+                        <div id="sp500" class="chart"></div>
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class = "col-sm-12">
+                        <h2 id="ixic_now" class = "ticker-values">{{ "${:,.2f}".format(indexes['Nasdaq']) }}</h2>
+                        <div id="nasdaq" class="chart"></div>
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class = "col-sm-12">
+                        <h2 id = "dji_now" class = "ticker-values">{{ "${:,.2f}".format(indexes['Dow Jones']) }}</h2>
+                        <div id="dow" class="chart"></div>
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class = "col-sm-12">
+                        <h2 id = "crude_now" class = "ticker-values">{{ "${:,.2f}".format(indexes['Crude Oil']) }}</h2>
+                        <div id="oil" class="chart"></div>
+                    </div>
+                </div>
+            </div>
+            <div class = "col-sm-5">
+                <div class = "row">
+                    <div class = "col-sm-12">
+                        <table class = "table table-dark"
+                                data-height="500"
+                                data-pagination="true"
+                                data-show-fullscreen="true"
+                                data-sticky-header="true"
+                                data-toggle="table"
+                                data-show-columns="true">
+                            <p>Biggest Gainers</p>
+                            <thead>
+                                <tr>
+                                    <th scope = "col1" data-sortable="true">Companies</th>
+                                    <th scope = "col2" data-sortable="true">Price</th>
+                                    <th scope = "col2" data-sortable="true">Change</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for (a,b,c) in zip(gainers['symbol'], gainers['price_intra'],gainers['change_per']) %}
+                                <tr>
+                                    <td>{{ a }}</td>
+                                    <td>{{ b }}</td>
+                                    <td>{{ c }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class = "col-sm-12">
+                    <table class = "table table-dark"
+                            data-height="500"
+                            data-pagination="true"
+                            data-show-fullscreen="true"
+                            data-sticky-header="true"
+                            data-toggle="table"
+                            data-show-columns="true">
+                        <p>Biggest Losers</p>
+                        <thead>
+                            <tr>
+                                <th scope = "col1" data-sortable="true">Companies</th>
+                                <th scope = "col2" data-sortable="true">Price</th>
+                                <th scope = "col2" data-sortable="true">Change</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for (a,b,c) in zip(losers['symbol'], losers['price_intra'],losers['change_per']) %}
+                            <tr>
+                                <td> {{ a }}</td>
+                                <td> {{ b }}</td>
+                                <td> {{ c }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script type="text/javascript">
+    var dowgraph = {{dow_graphJSON | safe}};
+    Plotly.plot('dow',dowgraph,{});
+
+    var sp500graph = {{sp500_graphJSON | safe}};
+    Plotly.plot('sp500',sp500graph,{});
+
+    var nasgraph = {{nas_graphJSON | safe}};
+    Plotly.plot('nasdaq',nasgraph,{});
+
+    var oilgraph = {{crude_oil_graphJSON | safe}};
+    Plotly.plot('oil',oilgraph,{});
+</script>
+<script>
+
+
+    let gspc  = document.getElementById("gspc-prev").innerText;
+    let ixic  = document.getElementById("ixic-prev").innerText;
+    let dji  = document.getElementById("dji-prev").innerText;
+    let crude_oil  = document.getElementById("crude-oil-prev").innerText;
+
+    let gspc_now  = document.getElementById("gspc_now").innerText;
+    let ixic_now  = document.getElementById("ixic_now").innerText;
+    let dji_now  = document.getElementById("dji_now").innerText;
+    let crude_oil_now  = document.getElementById("crude_now").innerText;
+
+    if (gspc > gspc_now){
+        document.getElementById("gspc_now").style.color = "red";
+        console.log(1)
+    } else if (gspc < gspc_now){
+        console.log(2)
+         document.getElementById("gspc_now").style.color = "green";
+    }
+
+    if (ixic > ixic_now){
+        document.getElementById("ixic_now").style.color = "red";
+        console.log(1)
+    } else if (ixic < ixic_now){
+        console.log(2)
+         document.getElementById("ixic_now").style.color = "green";
+    }
+
+    if (dji > dji_now){
+        document.getElementById("dji_now").style.color = "red";
+        console.log(1)
+    } else if (dji < dji_now){
+        console.log(2)
+         document.getElementById("dji_now").style.color = "green";
+    }
+
+    if (crude_oil > crude_oil_now){
+        document.getElementById("crude_now").style.color = "red";
+        console.log(1)
+    } else if (crude_oil < crude_oil_now){
+        console.log(2)
+         document.getElementById("crude_now").style.color = "green";
+    }
+</script>
+{% endblock %}

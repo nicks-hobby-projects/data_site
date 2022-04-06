@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% block head_chart_stufF %}
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js" integrity="sha512-6LlEY//aBtZnKL2vh72LQH9fO56FkQA3HdDvhUPND8Rcmc6v+aVJbzqaW09boyOuFlXbFMQFpmBVPOME5OL4sg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+</script>-->
+
+<script src ="static/chartjs/node_modules/chart.js/dist/chart.js"> </script>
+{% endblock %}
+{% block title %}
+Calculators
+{% endblock %}
+
+{% block content %}
+
+<div class = "container-xxl">
+  <div class = "row">
+      <div class = "col-11">
+        <div class = "row">
+          <div class = "col">
+            <h2> Savings Calculator </h2>
+            <label for="savings_years">Number of Years </label><br>
+            <input type = "number" id = "savings_years" name = "savings_years"><br>
+            <label for="savings_amount">Starting Amount </label><br>
+            <input type = "number" id = "savings_amount" name = "savings_amount"><br>
+            <label for="yearly_amt">Yearly Saved Amount </label><br>
+            <input type = "number" id = "yearly_amt" name = "yearly_amt"><br>
+            <label for="savings_rate">Expected Rate (2% = 2) </label><br>
+            <input type = "number" id = "savings_rate" name = "savings_rate"><br>
+            <button type="button" id="savings_calc_but">Calculate</<button>
+            <button type="button" id="savings_calc_clear">Clear</<button>
+          </div>
+          <div id = "savings_table" class = "col">
+          </div>
+          <div class = "col">
+            <canvas id = "savings_chart" width = "1" height ="1"></canvas>
+          </div>
+        </div>
+      </div>
+        <div class="col-1">
+          <p>hi</p>
+      </div>
+    </div>
+</div>
+
+
+
+<script>
+//  Chart.defaults.global.responsive = false;
+
+  document.getElementById("savings_calc_but").onclick = function() {savings_table()}
+  document.getElementById("savings_calc_clear").onclick = function(){clear_savings_table()}
+
+  function savings_table () {
+    var x = 1
+    var years = document.getElementById("savings_years").value;
+    years = parseFloat(years);
+    var amount = document.getElementById("savings_amount").value;
+    amount = parseFloat(amount);
+    var yearly_amt = document.getElementById("yearly_amt").value;
+    yearly_amt = parseFloat(yearly_amt)
+    var rate = document.getElementById("savings_rate").value;
+    rate = parseFloat(rate);
+    //only run if numbers are entered
+    if (!isNaN(years)  & years <= 100){
+      if (isNaN(amount)){
+        amount = 0
+      }
+      if (isNaN(rate)){
+        amount = 0
+      }
+      if (isNaN(yearly_amt)){
+        yearly_amt = 0
+      }
+      rate = rate * 0.01
+      var running_amount = amount
+      table = '<table> <tr> <th> Year </th> <th> Amount </th> </tr>'
+      table_rows = ''
+      const years_array = []
+      const running_array = []
+      //looping through the years
+      while (x <= years){
+        running_amount = running_amount + yearly_amt
+        running_amount = running_amount + (running_amount*rate)
+        table_rows = table_rows + '<tr><td>'+String(x)+'</td><td>'+String(running_amount.toPrecision(2))+'</td></tr>'
+        years_array[x-1]=x
+        running_array[x-1] = running_amount.toPrecision(2)
+        x++;
+      }
+      table = table + table_rows + '</table>'
+
+      //document.getElementById('savings_chart_div').innerHTML = '<canvas id = "savings_chart" width = "600" height ="400"></canvas>'
+      const savings_ctx = document.getElementById('savings_chart')
+      const myChart = new Chart(savings_ctx, {
+          type: 'line',
+          data: {
+              labels: years_array ,
+              datasets: [{
+                  label: 'Cumulative Value',
+                  pointBorderColor: "rgba(75,192,192,1)",
+                  pointBackgroundColor: "#fff",
+                  pointBorderWidth: 1,
+                  pointHoverRadius: 5,
+                  pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                  pointHoverBorderColor: "rgba(220,220,220,1)",
+                  pointHoverBorderWidth: 2,
+                  pointRadius: 1,
+                  pointHitRadius: 10,
+                  data: running_array,
+                  backgroundColor: [
+                    "green"
+                  ],
+                  borderColor: [
+                      "grey"
+                  ],
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              scales: {
+                  y: {
+                      beginAtZero: false
+                  }
+              }
+          }
+      });
+
+
+    //  alert(table);
+      document.getElementById("savings_table").innerHTML = table;
+    }
+  }
+  function clear_savings_table() {
+    document.getElementById("savings_table").innerHTML ="";
+  }
+
+
+
+
+
+
+</script>
+
+{% endblock %}

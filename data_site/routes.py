@@ -86,6 +86,9 @@ def stock_market():
                             gainers=gainers, losers=losers,
                             gspc_prev = gspc_prev,ixic_prev=ixic_prev,dji_prev=dji_prev,crude_oil_prev=crude_oil_prev,
                             indexes=indexes)
-
+@app.route('/data_apis')
+def data_apis():
+    return render_template('data_apis.html')
 
 api.add_resource(Markets,'/apiv1/markets')
+api.add_resource(Total_Wealth,'/apiv1/total_wealth')

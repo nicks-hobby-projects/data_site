@@ -16,14 +16,11 @@ def limiter():
     return _limiter
 
 
-class CustomAPIMixin:
-    def api_response(self, content):
-        return content
 
 
 
 class Markets(Resource):
-    decorators = [limiter().limit("1/minute", methods=["GET"])]
+    decorators = [limiter().limit("6/minute;1/10 seconds", methods=["GET"])]
 
     def get(self):
 
@@ -142,4 +139,47 @@ class Markets(Resource):
                 return "Please use a sym in (gspc, ixic, dji, crude_oil)"
         else:
             return "Please enter a date range of <=60"
+
+class Total_Wealth(Resource):
+    decorators = [limiter().limit("6/minute;1/10 seconds", methods=["GET"])]
+
+    def get(self):
+
+        bot50 = []
+        f50to90 = []
+        f90to99 = []
+        f99to100 = []
+        sum = []
+        bot50_per = []
+        f50to90_per = []
+        f90to99_per = []
+        f99to100_per = []
+        date = []
+        results = TOTAL_WEALTH_DIST.query.all()
+        for r in results:
+            bot50.append(r.bot50)
+            f50to90.append(r.f50to90)
+            f90to99.append(r.f90to99)
+            f99to100.append(r.f99to100)
+            sum.append(r.sum)
+            bot50_per.append(r.bot50_per)
+            f50to90_per.append(r.f50to90_per)
+            f90to99_per.append(r.f90to99_per)
+            f99to100_per.append(r.f99to100_per)
+            date.append(r.date.strftime('%Y-%m-%d'))
+        answer = {'total_wealth':{
+                'bot50': bot50,
+                'f50to90': f50to90,
+                'f90to99': f90to99,
+                'f99to100':f99to100,
+                'sum': sum,
+                'bot50_per':bot50_per,
+                'f50to90_per':f50to90_per,
+                'f90to99_per':f90to99_per,
+                'f99to100_per':f99to100_per,
+                'date':date
+                    }}
+        answer = json.dumps(answer)
+        return answer
+
 

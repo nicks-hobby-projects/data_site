@@ -17,3 +17,7 @@ caption { caption-side:top; }
                 font-size: 21px;
 }
 
+.param_title{
+    color: #000000;
+    font-size: 14px;
+}

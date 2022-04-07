@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}
+Apis
+{% endblock %}
+
+
+{% block content %}
+
+<div class = "container">
+    <div class = "row">
+
+        <div class = "col-1">
+
+        </div>
+        <div class = "col-md-11">
+            <ul class = "list-group">
+            <li class="list-group-item active">
+            <div><h3>About</h3></div>
+            <ul class "list-group">
+                <li class="list-group-item active list-group-item-dark">
+                    <p class = "param_title" >All end points rate limited @ 6/minute and 1/10 seconds </p>
+                    <p class = "param_title" >More end points will be added in the future </p>
+                </li>
+            </ul>
+            </li>
+            </ul>
+            <p></p>
+            <ul class="list-group">
+                <a class="btn btn-primary" data-toggle="collapse" href="#marketendpoit" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Market Time Series End Point</a>
+
+                    <li class="list-group-item active">
+                <div id = "marketendpoit" class = "collapse multi-collapse">
+                        <ul class = "list-group">
+                            <li class="list-group-item active ">
+                                <h4>Market Time Series End Point</h4>
+                            </li>
+                            <li class="list-group-item active list-group-item-dark">
+                                <p>Required params</p>
+                                <ul class = "list-group">
+                                    <li class = "list-group-item list-group-item-dark">
+                                        <p><span class = "param_title">sym:</span><span>must be gspc, ixic, dji, crude_oil</span> </p>
+                                    </li>
+                                    <li class = "list-group-item list-group-item-dark">
+                                        <p><span class = "param_title">st_date:</span><span> in format Year/month/day (exp: 2020/01/31)</span></p>
+                                    </li>
+                                    <li class = "list-group-item list-group-item-dark">
+                                        <p><span class = "param_title">en_date:</span><span> in format Year/month/day (exp: 2020/01/31)</span></p>
+                                        <p><span>Must be 60 days or less from the start</span></p>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="list-group-item active">
+                                <a class="btn btn-primary" data-toggle="collapse" href="#marketexp" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Examples</a>
+                                <div id = "marketexp" class = "collapse multi-collapse" >
+                                <ul class  = "list-group">
+                                    <li class="list-group-item list-group-item-dark">
+                                         <a href = "https://justsomeguy.pythonanywhere.com/apiv1/markets?sym=gspc&st_date=2022-01-01&en_date=2022-03-01">/apiv1/markets?sym=gspc&st_date=2022-01-01&en_date=2022-03-01</a>
+                                    </li>
+                                </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    </li>
+                    <a class="btn btn-primary" data-toggle="collapse" href="#test1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Total Wealth End Point</a>
+                    <li class="list-group-item active">
+
+                <div id = "test1" class = "collapse multi-collapse">
+                        <ul class = "list-group">
+                            <li class="list-group-item active ">
+                                <h4>Total Wealth End Point</h4>
+                            </li>
+                            <li class="list-group-item active list-group-item-dark">
+                                <p>Required params</p>
+                                <ul class = "list-group">
+                                    <li class = "list-group-item list-group-item-dark">
+                                        <p><span class = "param_title">None</span><span></span> </p>
+                                    </li>
+
+                                </ul>
+                            </li>
+                            <li class="list-group-item active">
+                                <a class="btn btn-primary" data-toggle="collapse" href="#twexp" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Examples</a>
+                                <div id = "twexp" class = "collapse multi-collapse" >
+                                <ul class  = "list-group">
+                                    <li class="list-group-item list-group-item-dark">
+                                         <a href = "https://justsomeguy.pythonanywhere.com/apiv1/total_wealth">/apiv1/total_wealth</a>
+                                    </li>
+                                </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    </li>
+
+            </ul>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+{% endblock %}

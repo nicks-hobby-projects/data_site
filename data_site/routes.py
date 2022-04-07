@@ -1,4 +1,4 @@
-from data_site import app
+from data_site import app, api
 from flask import render_template, redirect, url_for, flash
 import pandas as pd
 from data_site import db
@@ -6,6 +6,8 @@ from data_site.models import *
 from data_site.web_functs import *
 from datetime import datetime
 from flask import request
+from data_site.apis import *
+
 
 @app.route('/')
 @app.route('/home')
@@ -84,3 +86,6 @@ def stock_market():
                             gainers=gainers, losers=losers,
                             gspc_prev = gspc_prev,ixic_prev=ixic_prev,dji_prev=dji_prev,crude_oil_prev=crude_oil_prev,
                             indexes=indexes)
+
+
+api.add_resource(Markets,'/apiv1/markets')

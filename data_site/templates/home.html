@@ -13,6 +13,11 @@ Home Page
 <div id = "dji-prev" hidden >"{{ dji_prev }}"</div>
 <div id = "crude-oil-prev" hidden >"{{ crude_oil_prev }}"</div>
 
+<div id = "gspc-cur" hidden >"{{ indexes['S&P 500'] }}"</div>
+<div id = "ixic-cur" hidden >"{{ indexes['Nasdaq'] }}"</div>
+<div id = "dji-cur" hidden >"{{ indexes['Dow Jones'] }}"</div>
+<div id = "crude-oil-cur" hidden >"{{ indexes['Crude Oil'] }}"</div>
+
 <div class = "container-fluid">
     <div class = "row">
         <div class = "col-12">
@@ -101,15 +106,15 @@ Home Page
 <script>
 
 
-    let gspc  = document.getElementById("gspc-prev").innerText;
-    let ixic  = document.getElementById("ixic-prev").innerText;
-    let dji  = document.getElementById("dji-prev").innerText;
-    let crude_oil  = document.getElementById("crude-oil-prev").innerText;
+    let gspc  = Number((document.getElementById("gspc-prev").innerText).replace(/"/g,''));
+    let ixic  = Number((document.getElementById("ixic-prev").innerText).replace(/"/g,''));
+    let dji  = Number((document.getElementById("dji-prev").innerText).replace(/"/g,''));
+    let crude_oil  = Number((document.getElementById("crude-oil-prev").innerText).replace(/"/g,''));
 
-    let gspc_now  = document.getElementById("gspc_now").innerText;
-    let ixic_now  = document.getElementById("ixic_now").innerText;
-    let dji_now  = document.getElementById("dji_now").innerText;
-    let crude_oil_now  = document.getElementById("crude_now").innerText;
+    let gspc_now  = Number((document.getElementById("gspc-cur").innerText).replace(/"/g,''));
+    let ixic_now  = Number((document.getElementById("ixic-cur").innerText).replace(/"/g,''));
+    let dji_now  = Number((document.getElementById("dji-cur").innerText).replace(/"/g,''));
+    let crude_oil_now  = Number((document.getElementById("crude-oil-cur").innerText).replace(/"/g,''));
 
     if (gspc > gspc_now){
         document.getElementById("gspc_now").style.color = "red";
@@ -129,9 +134,9 @@ Home Page
 
     if (dji > dji_now){
         document.getElementById("dji_now").style.color = "red";
-        console.log(1)
+        console.log("a",dji,dji_now)
     } else if (dji < dji_now){
-        console.log(2)
+        console.log("b",dji,dji_now)
          document.getElementById("dji_now").style.color = "green";
     }
 

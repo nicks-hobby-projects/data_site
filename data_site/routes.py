@@ -40,6 +40,13 @@ def econ():
     tot_w_values = total_wealth_results[2]
     return render_template('econ.html',tot_w_values = tot_w_values, tot_w_labels = tot_w_labels, tot_w_legend=tot_w_legend,chart_dict = chart_dict,headers = headers, datas = datas)
 
+@app.route('/econ_dataV2')
+def econ_dataV2():
+    gdp_graph = functs.getting_gdp_graph()
+    cpi_grpah = functs.getting_cpi_graph()
+    total_wealth_graph = functs.making_total_wealth_pie_cahrt()
+    return render_template('econ_dataV2.html',gdp_graph=gdp_graph,total_wealth_graph=total_wealth_graph, cpi_grpah=cpi_grpah )
+
 @app.route('/market_data')
 def market_data():
     return render_template('market_data.html')

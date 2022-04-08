@@ -35,6 +35,7 @@ class functs():
         except:
             img_dict['url_for_pic'] = img_dict['url']
         return(img_dict)
+
     #making stock market charts for indexes. this uses a model as one of the variables
     def making_stock_charts(mod,sym,y):
         import plotly
@@ -57,6 +58,75 @@ class functs():
         graphJSON = j.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
         return graphJSON
+
+    def getting_gdp_graph():
+        import plotly
+        import plotly.express as px
+        results = GDP.query.order_by(GDP.date.desc()).all()
+        result_dict = {'date':[],
+                        'vals':[]}
+        for r in results:
+            result_dict['date'].append(r.date)
+            result_dict['vals'].append(r.vals)
+        result_df = pd.DataFrame.from_dict(result_dict)
+        fig = px.line(result_df, x='date', y='vals',
+                        labels = {'date':'Quarter',
+                                 'vals':'GDP'},
+                        title = 'Gross Domestic Product',
+                        template = 'plotly_dark')
+        fig.update_xaxes(rangeslider_visible=True)
+        graphJSON = j.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        return graphJSON
+
+    def getting_cpi_graph():
+        import plotly
+        import plotly.express as px
+        results = CPIAUCSL.query.order_by(CPIAUCSL.date.desc()).all()
+        result_dict = {'date':[],
+                        'vals':[]}
+        for r in results:
+            result_dict['date'].append(r.date)
+            result_dict['vals'].append(r.vals)
+        result_df = pd.DataFrame.from_dict(result_dict)
+        fig = px.line(result_df, x='date', y='vals',
+                        labels = {'date':'Date',
+                                 'vals':'CPIAUCSL'},
+                        title = 'Consumer Price Index',
+                        template = 'plotly_dark')
+        fig.update_xaxes(rangeslider_visible=True)
+        graphJSON = j.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        return graphJSON
+
+    def making_total_wealth_pie_cahrt():
+        import plotly
+        import plotly.express as px
+
+        table_name = "TOTAL_WEALTH_DIST".lower()
+        results = TOTAL_WEALTH_DIST.query.order_by(TOTAL_WEALTH_DIST.date.desc()).first()
+        data = []
+        head = []
+        data.append(results.bot50)
+        data.append(results.f50to90)
+        data.append(results.f90to99)
+        data.append(results.f99to100)
+
+        head.append('Bottom 50')
+        head.append('50 to 90')
+        head.append('90 to 99')
+        head.append('99 to 100')
+
+        result_df = pd.DataFrame({'Percentage':data,
+                                'header':head
+                                })
+        fig = px.pie(result_df,
+        values = 'Percentage',
+        names = 'header',
+        title = "Total Wealth Distribution",
+        template = 'plotly_dark'
+        )
+        graphJSON = j.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        return graphJSON
+
     #geting top values from some of the ecomic data tables to display on the econ page
     def geting_top_table_vals():
         n = []
